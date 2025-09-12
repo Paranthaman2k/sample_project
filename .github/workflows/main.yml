@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
 
       - name: Configure AWS OIDC
-        uses: aws-actions/configure-aws-cedentials@v4.1.0
+        uses: aws-actions/configure-aws-cedentials@v4
         with:
             role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
             aws-region: ${{ secrets.AWS_REGION }}
@@ -44,20 +44,20 @@ jobs:
         run: terraform fmt -check
         working-directory: TERRAFORM_POC
 
-      - name: Terraform Validate
-        run: terraform Validate
+      - name: Terraform Validate 
+        run: terraform Validate --var-file=dev.tfvars
         working-directory: TERRAFORM_POC
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan --var-file=dev.tfvars
         working-directory: TERRAFORM_POC
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan --var-file=dev.tfvars
         working-directory: TERRAFORM_POC
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve tfplan
+        run: terraform destroy -auto-approve tfplan --var-file=dev.tfvars
         working-directory: TERRAFORM_POC
 
 
