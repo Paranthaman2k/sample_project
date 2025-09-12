@@ -23,12 +23,13 @@ jobs:
           fetch-depth: 0
 
       - name: Configure AWS OIDC
-        uses: aws-actions/configure-aws-cedentials@v4
+        uses: aws-actions/configure-aws-cedentials@v4.1.0
         with:
             role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-            role-session-name: GitHubActions
             aws-region: ${{ secrets.AWS_REGION }}
-
+        
+      - name: Verify AWS Identity
+        run : aws sts-get-caller-identity
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
