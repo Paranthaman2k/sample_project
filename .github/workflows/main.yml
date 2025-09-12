@@ -1,0 +1,63 @@
+name : Terraform Deployment
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+      branches:
+      - main
+      
+permissions:
+    id-token: write
+    contents: read
+ 
+jobs:
+  terraform:
+     name: Terraform Apply
+     runs-on: ubuntu-latest
+
+     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS OIDC
+        uses: aws-actions/configure-aws-cedentials@v4
+        with:
+            role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+            role-session-name: GitHubActions
+            aws-region: ${{ secrets.AWS_REGION }}
+
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Terraform Initialize
+        run: terraform init 
+        working-directory: TERRAFORM_POC
+
+      - name: Terraform Format
+        run: terraform fmt -check
+        working-directory: TERRAFORM_POC
+
+      - name: Terraform Validate
+        run: terraform Validate
+        working-directory: TERRAFORM_POC
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: TERRAFORM_POC
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: TERRAFORM_POC
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve tfplan
+        working-directory: TERRAFORM_POC
+
+
+         
