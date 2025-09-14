@@ -48,9 +48,9 @@ jobs:
 
       - name: Terraform Initialize
         run: terraform init
-        working-directory: ./sample_project/sample_project
+        working-directory: ./
 
 
       - name: Terraform validate
         run: terraform validate
-        working-directory: ./sample_project/sample_project
+        working-directory: ./
