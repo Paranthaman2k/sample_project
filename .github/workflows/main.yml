@@ -32,34 +32,8 @@ jobs:
       - name: Verify AWS Identity
         run : aws sts-get-caller-identity
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: latest
-
-      - name: Terraform Initialize
-        run: terraform init 
-        working-directory: TERRAFORM_POC
-
-      - name: Terraform Format
-        run: terraform fmt -check
-        working-directory: TERRAFORM_POC
-
-      - name: Terraform Validate 
-        run: terraform Validate --var-file=dev.tfvars
-        working-directory: TERRAFORM_POC
-
-      - name: Terraform Plan
-        run: terraform plan -out=tfplan --var-file=dev.tfvars
-        working-directory: TERRAFORM_POC
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan --var-file=dev.tfvars
-        working-directory: TERRAFORM_POC
-
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve tfplan --var-file=dev.tfvars
-        working-directory: TERRAFORM_POC
-
-
-         
+      - name: Debug OIDC token
+        run: |
+          echo "Requesting OIDC token..."
+          curl -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+          "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq .
