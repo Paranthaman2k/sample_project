@@ -19,9 +19,7 @@ jobs:
      steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
+        
       - name: Configure AWS OIDC
         id: aws-oidc
         uses: aws-actions/configure-aws-credentials@v4
