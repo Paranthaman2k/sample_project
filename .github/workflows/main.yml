@@ -43,10 +43,13 @@ jobs:
         with:
           terraform_version: latest
 
+      - name: show directory structure
+        run: pwd && ls -R
+
       - name: Terraform Initialize
         run: terraform init
-        working-directory: sample_project
+        working-directory: ./sample_project
 
       - name: Terraform validate
         run: terraform validate
-        working-directory: sample_project
+        working-directory: ./sample_project
