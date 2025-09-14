@@ -37,3 +37,16 @@ jobs:
             role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
             role-session-name: github-actions
             aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Terraform Initialize
+        run: terraform init
+        working-directory: sample_project
+
+      - name: Terraform validate
+        run: terraform validate
+        working-directory: sample_project
